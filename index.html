@@ -3,86 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Portfólio e Scripts</title>
-    
+    <title>Meu Currículo e Scripts</title>
     <style>
-        /* Estilo geral da página */
+        /* 1. O Palco (A estética de fundo escuro e infinito do original) */
         body {
             margin: 0;
-            padding: 0;
-            background-color: #1a1a1a; /* Fundo escuro para destacar as fotos */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
             min-height: 100vh;
-            font-family: Arial, sans-serif;
-            color: white;
-            overflow: hidden; /* Evita barra de rolagem horizontal */
+            display: grid;
+            place-items: center; /* Centraliza perfeitamente no meio da tela */
+            background: #000; /* Fundo preto puro para destacar o efeito 3D */
+            overflow: hidden;
+            perspective: 35em; /* A profundidade de câmera exata usada no modelo */
         }
 
-        h1 {
-            margin-bottom: 50px;
-        }
-
-        /* --- MÁGICA DO CARROSSEL 3D --- */
-        
-        /* 1. O Palco (Scene): Cria a ilusão de profundidade (perspectiva) */
-        .scene {
-            position: relative;
-            width: 250px; /* Largura base das cartas */
-            height: 350px; /* Altura base das cartas */
-            perspective: 1000px; /* O quão "fundo" é o 3D */
-        }
-
-        /* 2. O Eixo Central (a3d): Mantém os elementos em 3D e aplica a rotação */
+        /* 2. O contêiner do carrossel */
         .a3d {
-            width: 100%;
-            height: 100%;
-            position: absolute;
+            /* Variáveis matemáticas que geram a roda 3D perfeita */
+            --w: 280px; /* Largura definida no código original (?w=280) */
+            --ba: calc(360deg / var(--n)); /* Calcula o ângulo base de cada carta */
+            
+            width: var(--w);
+            aspect-ratio: 7 / 10; /* Proporção de retrato elegante */
+            position: relative;
             transform-style: preserve-3d;
-            /* Animação que gira o eixo o tempo todo (20s para dar uma volta completa) */
-            animation: spin 20s infinite linear; 
+            animation: spin 15s linear infinite; /* Rotação contínua e constante */
         }
 
-        /* 3. As Imagens (Cartas): Posiciona cada uma em seu ângulo correto */
+        /* 3. As Cartas (Suas Imagens) */
         .card {
             position: absolute;
             width: 100%;
             height: 100%;
-            left: 0;
-            top: 0;
-            border-radius: 10px;
-            object-fit: cover; /* Corta a imagem bonitinha pra caber na carta */
-            box-shadow: 0 5px 15px rgba(0,0,0,0.8);
+            object-fit: cover; /* Faz as fotos diferentes se adaptarem sem achatar */
+            border-radius: 0.5em; /* Bordas levemente arredondadas */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.8);
             
-            /* AQUI ESTÁ O SEGREDO! 
-               Calcula o ângulo (360 / 5 imagens) multiplicando pelo índice (--i)
-               e empurra a imagem para a frente (translateZ) para formar o círculo */
-            transform: rotateY(calc(var(--i) * (360deg / var(--n)))) translateZ(300px);
+            /* A MÁGICA: A fórmula exata do código original.
+               Usa tan() (tangente) para calcular o raio do cilindro e empurrar
+               cada carta no eixo Z para a borda exata, somando um pequeno espaço extra (1rem) */
+            transform: 
+                rotateY(calc(var(--i) * var(--ba))) 
+                translateZ(calc(0.5 * var(--w) / tan(0.5 * var(--ba)) + 1rem));
         }
 
-        /* 4. A Animação de Giro */
+        /* 4. A animação que gira 1 volta inteira (-1turn) e recomeça */
         @keyframes spin {
-            from { transform: rotateY(0deg); }
-            to   { transform: rotateY(360deg); }
+            to { transform: rotateY(-1turn); }
         }
     </style>
 </head>
 <body>
-
-    <h1>Meus Projetos e Scripts</h1>
-
-    <!-- Estrutura HTML que definimos antes -->
+    <!-- Sua estrutura de 5 imagens adaptada para o palco e variáveis acima -->
     <div class="scene">
-        <div class="a3d" style="--n: 5">
-            <img class="card" src="img/20230616110824_IMG_6014.jpg" style="--i: 0" alt="Imagem do carrossel">
-            <img class="card" src="img/20230618222803_IMG_6154.jpg" style="--i: 1" alt="Imagem do carrossel">
-            <img class="card" src="img/IMG_0487.jpg" style="--i: 2" alt="Imagem do carrossel">
-            <img class="card" src="img/IMG_0714.jpg" style="--i: 3" alt="Imagem do carrossel">
-            <img class="card" src="img/IMG_1125.jpg" style="--i: 4" alt="Imagem do carrossel">
-        </div>
+      <div class="a3d" style="--n: 5">
+        <img class="card" src="img/20230616110824_IMG_6014.jpg" style="--i: 0" alt="Imagem 1">
+        <img class="card" src="img/20230618222803_IMG_6154.jpg" style="--i: 1" alt="Imagem 2">
+        <img class="card" src="img/IMG_0487.jpg" style="--i: 2" alt="Imagem 3">
+        <img class="card" src="img/IMG_0714.jpg" style="--i: 3" alt="Imagem 4">
+        <img class="card" src="img/IMG_1125.jpg" style="--i: 4" alt="Imagem 5">
+      </div>
     </div>
-
 </body>
 </html>
